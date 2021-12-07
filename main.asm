@@ -13,10 +13,18 @@ SEGMENT CODE
     PUSH    DX
     CALL    _printString
 
-    MOV    AX, 3
+    MOV    AX, 270fh
     PUSH AX
-    mov ax, 4
+    mov ax, 270fh
     push ax
+    MOV ax, RESULT
+    PUSH AX
+    int 3
+    nop
+    nop
+    nop
+    nop
+    nop
 
     CALL _soma
 

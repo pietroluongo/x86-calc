@@ -1,5 +1,6 @@
 SEGMENT DATA
-CR      EQU     0DH
-LF      EQU     0AH
+CR      EQU     0Dh
+LF      EQU     0Ah
+NULL    EQU     00h
 MSG     DB      'Hello World Calculator', CR, LF, '$'
-RESULT  DW   0h
+RESULT  DB      NULL, NULL, NULL, NULL      ; 4 bytes
