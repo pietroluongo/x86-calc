@@ -1,4 +1,4 @@
-extern _soma, _mult
+extern _soma, _mult, _div
 extern _printString
 SEGMENT CODE
 ..start:
@@ -15,7 +15,7 @@ SEGMENT CODE
 
     MOV    AX, 270fh
     PUSH AX
-    mov ax, 270Ah
+    mov ax, 22b8h
     push ax
     MOV ax, RESULT
     PUSH AX
@@ -27,7 +27,7 @@ SEGMENT CODE
     nop
     nop
 
-    CALL _mult
+    CALL _div
 
     exit:
     ; Fim do programa
