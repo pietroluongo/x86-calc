@@ -11,4 +11,4 @@ _printString:
     INT    21h
 
     POP    BP
-    RET 2
+    RET 4

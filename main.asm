@@ -12,6 +12,12 @@ SEGMENT CODE
     MOV     DX, MSG
     PUSH    DX
     CALL    _printString
+    pop dx
+    
+    MOV     DX, WELCOME_MSG
+    PUSH    DX
+    CALL    _printString
+    pop dx
 
     MOV    AX, 270fh
     PUSH AX
