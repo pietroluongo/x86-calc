@@ -4,4 +4,5 @@ call nasm data
 call nasm io
 call nasm mult
 call nasm div
-call freelink main sum data io mult div
+call nasm a2dec
+call freelink main sum data io mult div a2dec

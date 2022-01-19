@@ -1,39 +1,51 @@
 extern _soma, _mult, _div
-extern _printString
+extern _printString, _readString
+extern _ascii2dec
 SEGMENT CODE
 ..start:
+    ; Stack setup
     MOV     AX, DATA
     MOV     DS, AX
     MOV     AX, STACK
     MOV     SS, AX
     MOV     SP, STACKTOP
-    MOV     AH, 9
 
-    MOV     DX, MSG
-    PUSH    DX
-    CALL    _printString
-    pop dx
+    ; Print input
+    ; MOV     DX, MSG
+    ; PUSH    DX
+    ; CALL    _printString
+
+    ; Read input
+    MOV    AX, USR_INPUT_MAX_SIZE
+    PUSH   AX
+    CALL   _readString
+
+    ; Convert input
+    MOV     AX, USR_INPUT_BUFFER
+    PUSH    AX
+    MOV     AL, [USR_INPUT_ACTUAL_SIZE]
+    MOV     AH, 0
+    PUSH    AX
+    MOV     AX, FST_OP
+    PUSH    AX
+    CALL    _ascii2dec
     
-    MOV     DX, WELCOME_MSG
-    PUSH    DX
-    CALL    _printString
-    pop dx
-
-    MOV    AX, 270fh
-    PUSH AX
-    mov ax, 22b8h
-    push ax
-    MOV ax, RESULT
-    PUSH AX
     
-    int 3
-    nop
-    nop
-    nop
-    nop
-    nop
+    ; MOV    AX, 270fh
+    ; PUSH AX
+    ; mov ax, 22b8h
+    ; push ax
+    ; MOV ax, RESULT
+    ; PUSH AX
+    
+    ; int 3
+    ; nop
+    ; nop
+    ; nop
+    ; nop
+    ; nop
 
-    CALL _div
+    ; CALL _div
 
     exit:
     ; Fim do programa

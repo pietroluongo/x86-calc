@@ -1,4 +1,4 @@
-global _printString
+global _printString, _readString
 ; Imprime uma string na tela.
 ; retorno: nada
 ; arg0: DX WORD endereço da string a ser impressa
@@ -11,4 +11,22 @@ _printString:
     INT    21h
 
     POP    BP
-    RET 4
+    RET 2
+    
+; Lê uma string da entrada padrão
+; retorno: nada
+; arg0: DX WORD endereço de armazenamento da string
+; Stack: 
+; 0x0000 = BP
+; 0x0002 = Endereço de retorno
+; 0x0004 = arg0 int32_t*
+_readString:
+    PUSH   BP
+    MOV    BP, SP
+
+    MOV    AH, 0Ah
+    MOV    DX, [BP + 4]
+    INT    21h
+
+    POP    BP
+    RET 2
