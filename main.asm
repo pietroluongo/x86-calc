@@ -15,26 +15,102 @@ SEGMENT CODE
     ; PUSH    DX
     ; CALL    _printString
 
-    ; Read operator
-    MOV    AX, SELECTED_OP
-    PUSH   AX
-    CALL   _readOperator
 
-    ; Read input
-    MOV    AX, USR_INPUT_MAX_SIZE
-    PUSH   AX
-    CALL   _readString
+    initialCalculatorFlow:
+        ; Read operator
+        MOV    AX, SELECTED_OP
+        PUSH   AX
+        CALL   _readOperator
 
-    ; Convert input
-    MOV     AX, USR_INPUT_BUFFER
+        ; Read first number input
+        MOV    AX, USR_INPUT_MAX_SIZE
+        PUSH   AX
+        CALL   _readString
+
+        ; Convert first number input
+        MOV     AX, USR_INPUT_BUFFER
+        PUSH    AX
+        MOV     AL, [USR_INPUT_ACTUAL_SIZE]
+        MOV     AH, 0
+        PUSH    AX
+        MOV     AX, FST_OP
+        PUSH    AX
+        CALL    _ascii2dec
+
+        ; Read second number input
+        MOV    AX, USR_INPUT_MAX_SIZE
+        PUSH   AX
+        CALL   _readString
+
+        ; Convert second number input
+        MOV     AX, USR_INPUT_BUFFER
+        PUSH    AX
+        MOV     AL, [USR_INPUT_ACTUAL_SIZE]
+        MOV     AH, 0
+        PUSH    AX
+        MOV     AX, SND_OP
+        PUSH    AX
+        CALL    _ascii2dec
+
+    int 3
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+
+    MOV    BL, [SELECTED_OP]
+    MOV    DL, [SELECTED_OP]
+    MOV    DH, 0
+    MOV    BH, 0
+    MOV    AH, 2
+    INT    21H
+
+    ; Load data for actual functions
+    MOV     AX, [FST_OP]
     PUSH    AX
-    MOV     AL, [USR_INPUT_ACTUAL_SIZE]
-    MOV     AH, 0
+    MOV     AX, [SND_OP]
     PUSH    AX
-    MOV     AX, FST_OP
+    MOV     AX, RESULT
     PUSH    AX
-    CALL    _ascii2dec
-    
+
+    CMP   BX, '+'
+    JE    handleAdd
+    CMP   BX, '-'
+    JE    handleSubtract
+    CMP   BX, '*'
+    JE    handleMultiply
+    CMP   BX, '/'
+    JE    handleDivide
+    CMP   BX, 'q'
+    JE    handleQuit
+    JMP            handleInputError
+    handleAdd:
+        CALL    _soma
+        JMP     initialCalculatorFlow
+    handleSubtract:
+        JMP     initialCalculatorFlow
+    handleMultiply:
+        CALL    _mult
+        JMP     initialCalculatorFlow
+    handleDivide:
+        CALL    _div
+        JMP     initialCalculatorFlow
+    handleDefault:
+        JMP     initialCalculatorFlow
+    handleQuit:
+        JMP    exit
+
+    calculatorFlowEnd:
+        JMP    initialCalculatorFlow
+
+    handleInputError:
+        ; TODO: Print error message
+        JMP    initialCalculatorFlow
     
     ; MOV    AX, 270fh
     ; PUSH AX
@@ -43,15 +119,6 @@ SEGMENT CODE
     ; MOV ax, RESULT
     ; PUSH AX
     
-    ; int 3
-    ; nop
-    ; nop
-    ; nop
-    ; nop
-    ; nop
-
-    ; CALL _div
-
     exit:
     ; Fim do programa
     MOV     AH, 4CH

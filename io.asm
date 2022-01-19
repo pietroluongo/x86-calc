@@ -48,3 +48,4 @@ _readOperator:
     MOV     [BX], AL
 
     POP     BP
+    RET     2
