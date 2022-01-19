@@ -1,4 +1,4 @@
-extern _soma, _mult, _div
+extern _soma, _mult, _div, _sub
 extern _printString, _readString, _readOperator
 extern _ascii2dec
 SEGMENT CODE
@@ -93,6 +93,7 @@ SEGMENT CODE
         CALL    _soma
         JMP     initialCalculatorFlow
     handleSubtract:
+        CALL    _sub
         JMP     initialCalculatorFlow
     handleMultiply:
         CALL    _mult
@@ -100,24 +101,13 @@ SEGMENT CODE
     handleDivide:
         CALL    _div
         JMP     initialCalculatorFlow
-    handleDefault:
-        JMP     initialCalculatorFlow
     handleQuit:
         JMP    exit
-
     calculatorFlowEnd:
         JMP    initialCalculatorFlow
-
     handleInputError:
         ; TODO: Print error message
         JMP    initialCalculatorFlow
-    
-    ; MOV    AX, 270fh
-    ; PUSH AX
-    ; mov ax, 22b8h
-    ; push ax
-    ; MOV ax, RESULT
-    ; PUSH AX
     
     exit:
     ; Fim do programa
