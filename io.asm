@@ -1,4 +1,4 @@
-global _printString, _readString
+global _printString, _readString, _readOperator
 ; Imprime uma string na tela.
 ; retorno: nada
 ; arg0: DX WORD endereço da string a ser impressa
@@ -30,3 +30,21 @@ _readString:
 
     POP    BP
     RET 2
+
+; Lê um caractere da entrada padrão da operação da calculadora
+; retorno: nada
+; arg0: DX WORD endereço de armazenamento do caractere
+; Stack:
+; 0x0000 = BP
+; 0x0002 = Endereço de retorno
+; 0x0004 = arg0 char*
+_readOperator:
+    PUSH    BP
+    MOV     BP, SP
+    
+    MOV     AH, 1h
+    INT     21h
+    MOV     BX, [BP + 4]
+    MOV     [BX], AL
+
+    POP     BP

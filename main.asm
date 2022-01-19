@@ -1,5 +1,5 @@
 extern _soma, _mult, _div
-extern _printString, _readString
+extern _printString, _readString, _readOperator
 extern _ascii2dec
 SEGMENT CODE
 ..start:
@@ -14,6 +14,11 @@ SEGMENT CODE
     ; MOV     DX, MSG
     ; PUSH    DX
     ; CALL    _printString
+
+    ; Read operator
+    MOV    AX, SELECTED_OP
+    PUSH   AX
+    CALL   _readOperator
 
     ; Read input
     MOV    AX, USR_INPUT_MAX_SIZE
