@@ -2,6 +2,7 @@ extern _soma, _mult, _div, _sub
 extern _printString, _readString, _readOperator
 extern _ascii2dec, _bin2ascii
 extern _printNewline
+extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg
 
 SEGMENT CODE
 ..start:
@@ -20,6 +21,7 @@ SEGMENT CODE
 
     initialCalculatorFlow:
         ; Read operator
+        CALL   _printOperatorRequest
         MOV    AX, SELECTED_OP
         PUSH   AX
         CALL   _readOperator
@@ -27,6 +29,7 @@ SEGMENT CODE
         CALL _printNewline
 
         ; Read first number input
+        CALL   _printFirstInputRequest
         MOV    AX, USR_INPUT_MAX_SIZE
         PUSH   AX
         CALL   _readString
@@ -45,6 +48,7 @@ SEGMENT CODE
         CALL    _ascii2dec
 
         ; Read second number input
+        CALL  _printSecondInputRequest
         MOV    AX, USR_INPUT_MAX_SIZE
         PUSH   AX
         CALL   _readString
@@ -61,14 +65,13 @@ SEGMENT CODE
         PUSH    AX
         CALL    _ascii2dec
 
+    ; Move results to BX and DX
     MOV    BL, [SELECTED_OP]
     MOV    DL, [SELECTED_OP]
     MOV    DH, 0
     MOV    BH, 0
-    MOV    AH, 2
-    INT    21H
 
-    ; Load data for actual functions
+    ; Load data for actual functions on the stack
     MOV     AX, [FST_OP]
     PUSH    AX
     MOV     AX, [SND_OP]
@@ -108,6 +111,7 @@ SEGMENT CODE
         nop
         nop
         nop
+        CALL   _printResultMsg
         MOV    AX, [RESULT]
         PUSH   AX
         MOV    AX, RESULT_ASCII
@@ -116,6 +120,7 @@ SEGMENT CODE
         MOV    DX, RESULT_ASCII
         MOV    AH, 9
         INT    21h
+        CALL   _printNewline
         JMP    initialCalculatorFlow
     handleInputError:
         ; TODO: Print error message
