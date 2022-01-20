@@ -33,7 +33,21 @@ _bin2ascii:
         MOV            AX, DX
         INC            DI
     milhar:
+        MOV            DX, 0
+        MOV            BX, 1000
+        DIV            BX
+        ADD            AL, 30h
+        MOV    BYTE    [DI], AL
+        MOV            AX, DX
+        INC            DI
     centena:
+        MOV            BL, 100
+        DIV            BL
+        ADD            AL, 30h
+        MOV    BYTE    [DI], AL
+        MOV            AL, AH
+        AND            AX, 0xFF
+        INC            DI
     dezena:
         MOV            BL, 10
         DIV            BL
