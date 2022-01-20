@@ -1,8 +1,9 @@
 SEGMENT DATA
-CR      EQU     0Dh
-LF      EQU     0Ah
-NULL    EQU     00h
-MSG     DB      'Hello World Calculator', CR, LF, '$'
+CR            EQU     0Dh
+LF            EQU     0Ah
+NULL          EQU     00h
+MSG           DB      'Hello World Calculator', CR, LF, '$'
+CLEAR_LINE    DB      CR, LF, '$'
 ; 0x0 = ADD
 ; 0x1 = SUB
 ; 0x2 = MUL
@@ -13,8 +14,6 @@ OP_MUL   EQU    0x2
 OP_DIV   EQU    0x3
 LAST_OP  DB     NULL ; 1 byte, last operation done by the calculator
 
-
-WELCOME_MSG    DB    "Calculadora Inicializada", CR, LF, '$'
 
 ; Input stuff
 USR_INPUT_MAX_SIZE      DB    6

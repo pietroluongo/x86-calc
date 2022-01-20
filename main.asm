@@ -1,6 +1,8 @@
 extern _soma, _mult, _div, _sub
 extern _printString, _readString, _readOperator
-extern _ascii2dec
+extern _ascii2dec, _bin2ascii
+extern _printNewline
+
 SEGMENT CODE
 ..start:
     ; Stack setup
@@ -22,10 +24,15 @@ SEGMENT CODE
         PUSH   AX
         CALL   _readOperator
 
+        CALL _printNewline
+
         ; Read first number input
         MOV    AX, USR_INPUT_MAX_SIZE
         PUSH   AX
         CALL   _readString
+
+        CALL _printNewline
+
 
         ; Convert first number input
         MOV     AX, USR_INPUT_BUFFER
@@ -42,6 +49,8 @@ SEGMENT CODE
         PUSH   AX
         CALL   _readString
 
+        CALL _printNewline
+
         ; Convert second number input
         MOV     AX, USR_INPUT_BUFFER
         PUSH    AX
@@ -51,17 +60,6 @@ SEGMENT CODE
         MOV     AX, SND_OP
         PUSH    AX
         CALL    _ascii2dec
-
-    int 3
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-
 
     MOV    BL, [SELECTED_OP]
     MOV    DL, [SELECTED_OP]
@@ -91,19 +89,33 @@ SEGMENT CODE
     JMP            handleInputError
     handleAdd:
         CALL    _soma
-        JMP     initialCalculatorFlow
+        JMP     calculatorFlowEnd
     handleSubtract:
         CALL    _sub
-        JMP     initialCalculatorFlow
+        JMP     calculatorFlowEnd
     handleMultiply:
         CALL    _mult
-        JMP     initialCalculatorFlow
+        JMP     calculatorFlowEnd
     handleDivide:
         CALL    _div
-        JMP     initialCalculatorFlow
+        JMP     calculatorFlowEnd
     handleQuit:
         JMP    exit
     calculatorFlowEnd:
+        int 3
+        nop
+        nop
+        nop
+        nop
+        nop
+        MOV    AX, [RESULT]
+        PUSH   AX
+        MOV    AX, RESULT_ASCII
+        PUSH   AX
+        CALL   _bin2ascii
+        MOV    DX, RESULT_ASCII
+        MOV    AH, 9
+        INT    21h
         JMP    initialCalculatorFlow
     handleInputError:
         ; TODO: Print error message

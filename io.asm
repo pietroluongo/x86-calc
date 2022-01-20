@@ -1,4 +1,5 @@
 global _printString, _readString, _readOperator
+
 ; Imprime uma string na tela.
 ; retorno: nada
 ; arg0: DX WORD endereço da string a ser impressa
@@ -49,3 +50,4 @@ _readOperator:
 
     POP     BP
     RET     2
+    
