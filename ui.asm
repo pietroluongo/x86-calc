@@ -1,4 +1,4 @@
-global _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg
+global _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg
 _printNewline:
     MOV    DX, CLEAR_LINE
     JMP    doSyscall
@@ -18,6 +18,10 @@ _printOperatorRequest:
 _printResultMsg:
     MOV    DX, RESULT_MSG
     JMP    doSyscall
+
+_printErrorMsg:
+    MOV   DX, INVALID_OPERATION_MSG
+    JMP   doSyscall
 
 doSyscall:
     MOV    AH, 9h

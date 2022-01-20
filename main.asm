@@ -2,7 +2,7 @@ extern _soma, _mult, _div, _sub
 extern _printString, _readString, _readOperator
 extern _ascii2dec, _bin2ascii
 extern _printNewline
-extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg
+extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg
 
 SEGMENT CODE
 ..start:
@@ -26,8 +26,13 @@ SEGMENT CODE
         PUSH   AX
         CALL   _readOperator
 
-        CALL _printNewline
+        MOV    AL, [SELECTED_OP]
+        CMP    AL, 'q'
+        JNE    shouldAskForNumbers
+        JMP    exit
 
+    shouldAskForNumbers:
+        CALL _printNewline
         ; Read first number input
         CALL   _printFirstInputRequest
         MOV    AX, USR_INPUT_MAX_SIZE
@@ -65,11 +70,8 @@ SEGMENT CODE
         PUSH    AX
         CALL    _ascii2dec
 
-    ; Move results to BX and DX
+    ; Move results to BX
     MOV    BL, [SELECTED_OP]
-    MOV    DL, [SELECTED_OP]
-    MOV    DH, 0
-    MOV    BH, 0
 
     ; Load data for actual functions on the stack
     MOV     AX, [FST_OP]
@@ -79,16 +81,14 @@ SEGMENT CODE
     MOV     AX, RESULT
     PUSH    AX
 
-    CMP   BX, '+'
+    CMP   BL, '+'
     JE    handleAdd
-    CMP   BX, '-'
+    CMP   BL, '-'
     JE    handleSubtract
-    CMP   BX, '*'
+    CMP   BL, '*'
     JE    handleMultiply
-    CMP   BX, '/'
+    CMP   BL, '/'
     JE    handleDivide
-    CMP   BX, 'q'
-    JE    handleQuit
     JMP            handleInputError
     handleAdd:
         CALL    _soma
@@ -102,8 +102,6 @@ SEGMENT CODE
     handleDivide:
         CALL    _div
         JMP     calculatorFlowEnd
-    handleQuit:
-        JMP    exit
     calculatorFlowEnd:
         int 3
         nop
@@ -124,6 +122,7 @@ SEGMENT CODE
         JMP    initialCalculatorFlow
     handleInputError:
         ; TODO: Print error message
+        CALL   _printErrorMsg
         JMP    initialCalculatorFlow
     
     exit:
