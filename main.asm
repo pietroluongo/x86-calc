@@ -2,7 +2,7 @@ extern _soma, _mult, _div, _sub
 extern _printString, _readString, _readOperator
 extern _ascii2dec, _bin2ascii
 extern _printNewline
-extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg
+extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg, _printFormattedResult
 
 SEGMENT CODE
 ..start:
@@ -103,13 +103,15 @@ SEGMENT CODE
         CALL    _div
         JMP     calculatorFlowEnd
     calculatorFlowEnd:
-        int 3
-        nop
-        nop
-        nop
-        nop
-        nop
         CALL   _printResultMsg
+
+        INT 3
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+
         MOV    AX, [RESULT]
         PUSH   AX
         MOV    AX, RESULT_ASCII
@@ -118,7 +120,16 @@ SEGMENT CODE
         MOV    DX, RESULT_ASCII
         MOV    AH, 9
         INT    21h
+        ; MOV    AX, [FST_OP]
+        ; PUSH   AX
+        ; MOV    AX, [SND_OP]
+        ; PUSH   AX
+        ; MOV    AX, [SELECTED_OP]
+        ; PUSH   AX
+        ; MOV    AX, RESULT_ASCII
+        ; PUSH   AX
         CALL   _printNewline
+        ; CALl   _printFormattedResult
         JMP    initialCalculatorFlow
     handleInputError:
         ; TODO: Print error message

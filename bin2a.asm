@@ -52,6 +52,7 @@ _bin2ascii:
         MOV            BL, 10
         DIV            BL
         ADD            AL, 30h
+        MOV    BYTE    [DI], AL
         MOV    BYTE    AL, AH
         AND            AX, 0xFF
         INC            DI
