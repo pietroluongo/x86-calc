@@ -1,5 +1,5 @@
 extern _bin2ascii
-global _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg, _printFormattedResult
+global _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg
 _printNewline:
     MOV    DX, CLEAR_LINE
     JMP    doSyscall

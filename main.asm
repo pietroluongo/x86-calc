@@ -2,7 +2,7 @@ extern _soma, _mult, _div, _sub
 extern _printString, _readString, _readOperator
 extern _ascii2dec, _bin2ascii
 extern _printNewline
-extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg, _printFormattedResult
+extern _printNewline, _printFirstInputRequest, _printSecondInputRequest, _printOperatorRequest, _printResultMsg, _printErrorMsg
 
 SEGMENT CODE
 ..start:
@@ -129,7 +129,6 @@ SEGMENT CODE
         ; MOV    AX, RESULT_ASCII
         ; PUSH   AX
         CALL   _printNewline
-        ; CALl   _printFormattedResult
         JMP    initialCalculatorFlow
     handleInputError:
         ; TODO: Print error message
