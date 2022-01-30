@@ -29,55 +29,6 @@ doSyscall:
     INT    21h
     RET
 
-; Printa o resultado da operação de forma estruturada
-; retorno: nada
-; arg0: primeiro número da operação
-; arg1: segundo número da operação
-; arg2: operador da operação
-; arg3: resultado da operação
-; Stack: 
-; 0x0000 = BP
-; 0x0002 = Endereço de retorno
-; 0x0004 = arg3 char*
-; 0x0006 = arg2 char
-; 0x0008 = arg1 char*
-; 0x000A = arg0 char*
-_printFormattedResult:
-    PUSH    BP
-    MOV     BP, SP
-    
-    int 3
-    nop
-    nop
-    nop
-    nop
-    nop
-    
-    MOV     DX, [BP+0xA]
-    PUSH    DX
-    MOV     AX, FIRST_NUM_ASCII
-    PUSH    AX
-    CALL    _bin2ascii
-    MOV     DX, [FIRST_NUM_ASCII]
-    MOV     AH, 9h
-    INT     21h
-    
-    MOV     DX, [BP+8]
-    MOV     AH, 9
-    INT     21h
-    
-    MOV     DL, [BP+6]
-    MOV     AH, 5
-    INT     21h
-    
-    MOV     DX, [BP+4]
-    MOV     AH, 9
-    INT     21h
-    
-    CALL _printNewline
-
-    POP     BP
-    RET     8
 
 SEGMENT DATA
 CR            EQU     0Dh
